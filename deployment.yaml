@@ -1,0 +1,21 @@
+hosts: all 
+become: yes
+tasks:
+  - name: Install pip
+    apt:
+      update_cache: yes
+      name: python3-pip
+  - name: Update apt and install docker-ce
+    apt: update_cache=yes name=docker-ce state=latest
+  
+  - name: enable Docker services
+    service:
+      name: "docker"
+      state: started
+      enabled: yes
+
+  - name: Check if container is running
+    shell: docker ps
+
+  - name: run docker image
+    shell: docker run -dit --name  supermartket -p 8080:8080 sudhirm0606/supermarket
